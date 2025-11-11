@@ -1,30 +1,39 @@
-import { getNotionClient, validateNotionConfig } from './client';
+import { getNotionClient } from './client';
 import type { PostMetadata, NotionBlock } from '@/types/notion';
+
+const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 
 /**
  * Notion Database에서 게시글 목록을 가져옵니다.
  * Published 속성이 true인 게시글만 반환합니다.
  */
 export async function getPosts(): Promise<PostMetadata[]> {
+  if (!DATABASE_ID) {
+    console.warn('⚠️ NOTION_DATABASE_ID가 설정되지 않았습니다.');
+    return [];
+  }
+
   try {
-    // 환경 변수 검증
-    const { databaseId } = validateNotionConfig();
-    
-    // Notion 클라이언트 생성
     const notion = getNotionClient();
+    
+    // 디버깅: 클라이언트 구조 확인
+    console.log('🔍 Notion Client 구조 확인:');
+    console.log('   databases 타입:', typeof notion.databases);
+    console.log('   databases keys:', Object.keys(notion.databases || {}));
+    console.log('   query in databases:', 'query' in (notion.databases || {}));
     
     console.log('📝 Notion API: 게시글 목록 조회 시작');
     
-    // query 메서드 확인 및 호출
-    if (!('query' in notion.databases)) {
-      console.error('❌ databases.query 메서드를 찾을 수 없습니다.');
-      console.error('   사용 가능한 메서드:', Object.keys(notion.databases));
-      throw new Error('databases.query 메서드가 존재하지 않습니다.');
+    // 타입 단언을 사용하여 query 메서드 호출
+    const databases = notion.databases as any;
+    if (typeof databases.query !== 'function') {
+      console.error('❌ databases.query가 함수가 아닙니다.');
+      console.error('   사용 가능한 메서드:', Object.keys(databases));
+      throw new Error('databases.query 메서드를 찾을 수 없습니다.');
     }
     
-    // query 메서드 직접 호출
-    const response = await (notion.databases as any).query({
-      database_id: databaseId,
+    const response = await databases.query({
+      database_id: DATABASE_ID,
       filter: {
         property: 'Published',
         checkbox: {
@@ -123,9 +132,6 @@ export async function getPosts(): Promise<PostMetadata[]> {
  */
 export async function getPostBySlug(slug: string): Promise<PostMetadata | null> {
   try {
-    // 환경 변수 검증 (getPosts 내부에서도 검증되지만 명시적으로 확인)
-    validateNotionConfig();
-    
     console.log(`📝 Notion API: 게시글 조회 (slug: ${slug})`);
     
     const posts = await getPosts();
@@ -148,10 +154,6 @@ export async function getPostBySlug(slug: string): Promise<PostMetadata | null> 
  */
 export async function getPostBlocks(pageId: string): Promise<NotionBlock[]> {
   try {
-    // 환경 변수 검증
-    validateNotionConfig();
-    
-    // Notion 클라이언트 생성
     const notion = getNotionClient();
     
     console.log(`📝 Notion API: 블록 조회 시작 (pageId: ${pageId})`);
