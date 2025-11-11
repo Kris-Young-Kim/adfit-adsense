@@ -23,18 +23,26 @@ export function getNotionClient(): Client {
       throw new Error('Notion Client가 올바르게 생성되지 않았습니다.');
     }
 
-    if (!client.databases || typeof client.databases.query !== 'function') {
-      console.error('❌ Notion Client 구조 오류:');
-      console.error('   client:', client);
-      console.error('   client.databases:', client.databases);
-      console.error('   client keys:', Object.keys(client));
-      throw new Error('Notion Client의 databases.query 메서드를 찾을 수 없습니다.');
+    // databases 객체 확인
+    if (!client.databases) {
+      throw new Error('Notion Client의 databases 객체를 찾을 수 없습니다.');
+    }
+
+    // query 메서드가 있는지 확인 (Object.keys로는 보이지 않을 수 있으므로 직접 확인)
+    if (!('query' in client.databases) || typeof (client.databases as any).query !== 'function') {
+      // 디버깅 정보 출력
+      console.error('❌ Notion Client 구조 확인:');
+      console.error('   databases keys:', Object.keys(client.databases));
+      console.error('   databases.hasOwnProperty("query"):', Object.prototype.hasOwnProperty.call(client.databases, 'query'));
+      console.error('   "query" in databases:', 'query' in client.databases);
+      
+      // query 메서드가 없어도 일단 클라이언트 반환 (실제 호출 시 에러 확인)
+      console.warn('⚠️ databases.query를 찾을 수 없지만 클라이언트를 반환합니다.');
     }
 
     // 디버깅: 클라이언트 구조 확인
     if (process.env.NODE_ENV === 'development') {
       console.log('✅ Notion Client 생성 완료');
-      console.log('   databases.query 타입:', typeof client.databases.query);
     }
 
     return client;
