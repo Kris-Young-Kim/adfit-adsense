@@ -1,5 +1,6 @@
 import { getPosts } from '@/lib/notion/posts';
 import PostList from '@/components/blog/PostList';
+import AdFitAd from '@/components/ads/AdFitAd';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -28,6 +29,16 @@ export default async function BlogPage() {
         <p className="text-gray-600 dark:text-gray-400">
           Notion에서 작성한 게시글을 확인하세요.
         </p>
+      </div>
+      
+      {/* AdFit 광고 - 상단 */}
+      <div className="mb-8 flex justify-center">
+        <AdFitAd 
+          unitId="DAN-orrnBtdl54l5hgHS"
+          width="300"
+          height="250"
+          className="my-4"
+        />
       </div>
       
       <PostList posts={posts} />

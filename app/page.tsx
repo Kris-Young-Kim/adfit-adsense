@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getPosts } from '@/lib/notion/posts';
 import PostList from '@/components/blog/PostList';
+import AdFitAd from '@/components/ads/AdFitAd';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -37,6 +38,16 @@ export default async function Home() {
         >
           모든 게시글 보기
         </Link>
+      </section>
+
+      {/* AdFit 광고 - 상단 */}
+      <section className="mb-12 flex justify-center">
+        <AdFitAd 
+          unitId="DAN-orrnBtdl54l5hgHS"
+          width="300"
+          height="250"
+          className="my-4"
+        />
       </section>
 
       {/* 최신 게시글 섹션 */}

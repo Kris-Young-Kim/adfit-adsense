@@ -11,6 +11,15 @@ export default function Footer() {
           <p className="text-xs text-gray-500 dark:text-gray-500">
             Powered by Notion API & Next.js
           </p>
+          {/* 소유주 정보 - AdFit 심사 기준 충족 */}
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
+            <p className="text-xs text-gray-500 dark:text-gray-500">
+              소유주: 김은호
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-500">
+              이메일: <a href="mailto:dmsgheka@naver.com" className="hover:underline">dmsgheka@naver.com</a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

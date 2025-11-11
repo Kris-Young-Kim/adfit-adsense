@@ -5,7 +5,7 @@ import { adConfig, isAdfitEnabled, isAdsenseEnabled } from '@/lib/config/ads';
 
 /**
  * 광고 스크립트 컴포넌트
- * 루트 레이아웃에 광고 스크립트를 로드합니다.
+ * AdFit 가이드에 따라 body 하단에 스크립트를 로드합니다.
  */
 export default function AdScripts() {
   const adfitClientId = adConfig.adfit.clientId;
@@ -14,16 +14,14 @@ export default function AdScripts() {
 
   return (
     <>
-      {/* Kakao AdFit 스크립트 */}
+      {/* Kakao AdFit 스크립트 - 가이드에 따라 async로 로드 */}
       {isAdfitEnabled() && adfitClientId && (
         <Script
           src="https://t1.daumcdn.net/kas/static/ba.min.js"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
+          async
           onLoad={() => {
             console.log('✅ Kakao AdFit 스크립트 로드 완료');
-            if (window.kakao && window.kakao.adfit) {
-              window.kakao.adfit.start();
-            }
           }}
         />
       )}
