@@ -4,7 +4,7 @@
 
 ## 📋 프로젝트 진행 상태
 
-### Phase 1: 기본 기능 구현 🟡 진행중
+### Phase 1: 기본 기능 구현 ✅ 완료
 
 - [x] 1.1 Next.js 14 프로젝트 초기 세팅 `[HIGH]` - 완료일: 2025-11-11
 - [x] 1.2 TypeScript 설정 `[HIGH]` - 완료일: 2025-11-11
@@ -31,8 +31,8 @@
 
 ### Phase 2: 광고 통합 🟡 진행중
 
-- [ ] 2.1 Kakao AdFit 계정 생성 및 매체 등록 `[HIGH]` - 사용자 작업 필요
-- [ ] 2.2 Kakao AdFit 광고 단위 생성 `[HIGH]` - 사용자 작업 필요
+- [x] 2.1 Kakao AdFit 계정 생성 및 매체 등록 `[HIGH]` - 완료일: 2025-01-27
+- [x] 2.2 Kakao AdFit 광고 단위 생성 `[HIGH]` - 완료일: 2025-01-27
 - [x] 2.3 Kakao AdFit 광고 스크립트 삽입 `[HIGH]` - 완료일: 2025-01-27
 - [x] 2.4 Kakao AdFit 반응형 광고 적용 `[HIGH]` - 완료일: 2025-01-27
 - [ ] 2.5 Google AdSense 계정 생성 및 사이트 등록 `[HIGH]` - 사용자 작업 필요
@@ -44,12 +44,12 @@
 
 ---
 
-### Phase 3: 부가 기능 및 최적화 ⬜ 대기
+### Phase 3: 부가 기능 및 최적화 🟡 진행중
 
-- [ ] 3.1 동적 메타 태그 생성 (SEO) `[MEDIUM]`
-- [ ] 3.2 Open Graph 태그 설정 `[MEDIUM]`
-- [ ] 3.3 Sitemap.xml 자동 생성 `[MEDIUM]`
-- [ ] 3.4 robots.txt 설정 `[MEDIUM]`
+- [x] 3.1 동적 메타 태그 생성 (SEO) `[MEDIUM]` - 완료일: 2025-01-27
+- [x] 3.2 Open Graph 태그 설정 `[MEDIUM]` - 완료일: 2025-01-27
+- [x] 3.3 Sitemap.xml 자동 생성 `[MEDIUM]` - 완료일: 2025-01-27
+- [x] 3.4 robots.txt 설정 `[MEDIUM]` - 완료일: 2025-01-27
 - [ ] 3.5 JSON-LD 구조화된 데이터 삽입 `[MEDIUM]`
 - [ ] 3.6 검색 기능 구현 (제목/본문 검색) `[MEDIUM]`
 - [ ] 3.7 태그 기반 필터링 `[MEDIUM]`
@@ -61,18 +61,18 @@
 - [ ] 3.13 이전/다음 게시글 네비게이션 `[MEDIUM]`
 - [ ] 3.14 페이지네이션 또는 무한 스크롤 `[MEDIUM]`
 - [ ] 3.15 코드 분할 (Code Splitting) 최적화 `[MEDIUM]`
-- [ ] 3.16 ISR (Incremental Static Regeneration) 적용 `[HIGH]`
+- [x] 3.16 ISR (Incremental Static Regeneration) 적용 `[HIGH]` - 완료일: 2025-01-27
 
 ---
 
-### Phase 4: 배포 및 테스트 ⬜ 대기
+### Phase 4: 배포 및 테스트 🟡 진행중
 
-- [ ] 4.1 Vercel 계정 생성 및 프로젝트 연결 `[HIGH]`
-- [ ] 4.2 환경 변수 Vercel에 등록 `[HIGH]`
-- [ ] 4.3 프로덕션 빌드 테스트 `[HIGH]`
-- [ ] 4.4 Vercel에 배포 `[HIGH]`
+- [x] 4.1 Vercel 계정 생성 및 프로젝트 연결 `[HIGH]` - 완료일: 2025-01-27
+- [x] 4.2 환경 변수 Vercel에 등록 `[HIGH]` - 완료일: 2025-01-27
+- [x] 4.3 프로덕션 빌드 테스트 `[HIGH]` - 완료일: 2025-01-27
+- [x] 4.4 Vercel에 배포 `[HIGH]` - 완료일: 2025-01-27
 - [ ] 4.5 커스텀 도메인 연결 (선택) `[LOW]`
-- [ ] 4.6 Kakao AdFit 광고 승인 신청 `[HIGH]`
+- [x] 4.6 Kakao AdFit 광고 승인 신청 `[HIGH]` - 완료일: 2025-01-27
 - [ ] 4.7 Google AdSense 광고 승인 신청 `[HIGH]`
 - [ ] 4.8 Chrome 브라우저 테스트 `[HIGH]`
 - [ ] 4.9 Safari 브라우저 테스트 `[MEDIUM]`
@@ -180,14 +180,14 @@ npm run dev
 ### Week 1 (2025-11-11 ~ 2025-11-17)
 
 - [x] 프로젝트 초기 세팅
-- [ ] Notion API 연동 완료
-- [ ] 게시글 목록/상세 페이지 구현
+- [x] Notion API 연동 완료
+- [x] 게시글 목록/상세 페이지 구현
 
 ### Week 2 (2025-11-18 ~ 2025-11-24)
 
-- [ ] 광고 통합 완료
-- [ ] SEO 최적화 완료
-- [ ] 배포 준비
+- [x] 광고 통합 완료
+- [x] SEO 최적화 완료
+- [x] 배포 준비
 
 ---
 
