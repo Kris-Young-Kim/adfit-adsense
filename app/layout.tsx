@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   },
   description: "Notion에서 작성한 콘텐츠를 자동으로 블로그에 게시하는 웹사이트입니다.",
   keywords: ["Notion", "블로그", "Blog", "콘텐츠", "Content"],
-  authors: [{ name: "김은호", email: "dmsgheka@naver.com" }],
-  creator: "김은호",
-  publisher: "김은호",
+  authors: [{ name: "kris071" }],
+  creator: "kris071",
+  publisher: "kris071",
   robots: {
     index: true,
     follow: true,
