@@ -26,10 +26,9 @@ export default function BlockRenderer({ blocks }: BlockRendererProps) {
 
       if (isListItem) {
         // 타입 가드를 통해 타입을 좁힘
-        const listType: 'bulleted_list_item' | 'numbered_list_item' = 
-          block.type === 'bulleted_list_item' 
-            ? 'bulleted_list_item' 
-            : 'numbered_list_item';
+        const listType = (block.type === 'bulleted_list_item' 
+          ? 'bulleted_list_item' 
+          : 'numbered_list_item') as 'bulleted_list_item' | 'numbered_list_item';
         
         // 리스트 타입이 변경되거나 첫 번째 리스트 아이템인 경우
         if (currentListType !== listType) {
