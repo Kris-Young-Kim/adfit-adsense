@@ -1,30 +1,22 @@
-import { notion } from './client';
+import { getNotionClient, validateNotionConfig } from './client';
 import type { PostMetadata, NotionBlock } from '@/types/notion';
-
-const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 
 /**
  * Notion Database에서 게시글 목록을 가져옵니다.
  * Published 속성이 true인 게시글만 반환합니다.
  */
 export async function getPosts(): Promise<PostMetadata[]> {
-  // 환경 변수 검증
-  if (!process.env.NOTION_API_KEY || !DATABASE_ID) {
-    console.warn('⚠️ Notion API 키 또는 Database ID가 설정되지 않았습니다.');
-    return [];
-  }
-
-  // notion 클라이언트가 제대로 초기화되지 않은 경우
-  if (!notion || typeof notion.databases?.query !== 'function') {
-    console.error('❌ Notion 클라이언트가 제대로 초기화되지 않았습니다.');
-    return [];
-  }
-
   try {
+    // 환경 변수 검증
+    const { databaseId } = validateNotionConfig();
+    
+    // Notion 클라이언트 생성
+    const notion = getNotionClient();
+    
     console.log('📝 Notion API: 게시글 목록 조회 시작');
     
     const response = await notion.databases.query({
-      database_id: DATABASE_ID,
+      database_id: databaseId,
       filter: {
         property: 'Published',
         checkbox: {
@@ -122,13 +114,10 @@ export async function getPosts(): Promise<PostMetadata[]> {
  * Slug로 특정 게시글의 메타데이터를 가져옵니다.
  */
 export async function getPostBySlug(slug: string): Promise<PostMetadata | null> {
-  // 환경 변수 검증
-  if (!process.env.NOTION_API_KEY || !DATABASE_ID) {
-    console.warn('⚠️ Notion API 키 또는 Database ID가 설정되지 않았습니다.');
-    return null;
-  }
-
   try {
+    // 환경 변수 검증 (getPosts 내부에서도 검증되지만 명시적으로 확인)
+    validateNotionConfig();
+    
     console.log(`📝 Notion API: 게시글 조회 (slug: ${slug})`);
     
     const posts = await getPosts();
@@ -150,19 +139,13 @@ export async function getPostBySlug(slug: string): Promise<PostMetadata | null> 
  * 게시글의 모든 블록을 재귀적으로 가져옵니다.
  */
 export async function getPostBlocks(pageId: string): Promise<NotionBlock[]> {
-  // 환경 변수 검증
-  if (!process.env.NOTION_API_KEY) {
-    console.warn('⚠️ Notion API 키가 설정되지 않았습니다.');
-    return [];
-  }
-
-  // notion 클라이언트가 제대로 초기화되지 않은 경우
-  if (!notion || typeof notion.blocks?.children?.list !== 'function') {
-    console.error('❌ Notion 클라이언트가 제대로 초기화되지 않았습니다.');
-    return [];
-  }
-
   try {
+    // 환경 변수 검증
+    validateNotionConfig();
+    
+    // Notion 클라이언트 생성
+    const notion = getNotionClient();
+    
     console.log(`📝 Notion API: 블록 조회 시작 (pageId: ${pageId})`);
     
     const blocks: NotionBlock[] = [];
