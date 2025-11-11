@@ -13,6 +13,16 @@ export async function getPosts(): Promise<PostMetadata[]> {
     // Notion 클라이언트 생성
     const notion = getNotionClient();
     
+    // 클라이언트 검증
+    if (!notion || !notion.databases || typeof notion.databases.query !== 'function') {
+      console.error('❌ Notion 클라이언트가 올바르게 초기화되지 않았습니다.');
+      console.error('   notion:', !!notion);
+      console.error('   notion.databases:', !!notion?.databases);
+      console.error('   notion.databases.query:', typeof notion?.databases?.query);
+      console.error('   notion 객체 키:', notion ? Object.keys(notion) : 'null');
+      return [];
+    }
+    
     console.log('📝 Notion API: 게시글 목록 조회 시작');
     
     const response = await notion.databases.query({
