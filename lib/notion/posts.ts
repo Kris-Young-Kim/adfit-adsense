@@ -1,13 +1,25 @@
 import { notion } from './client';
 import type { PostMetadata, NotionBlock } from '@/types/notion';
 
-const DATABASE_ID = process.env.NOTION_DATABASE_ID!;
+const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 
 /**
  * Notion Database에서 게시글 목록을 가져옵니다.
  * Published 속성이 true인 게시글만 반환합니다.
  */
 export async function getPosts(): Promise<PostMetadata[]> {
+  // 환경 변수 검증
+  if (!process.env.NOTION_API_KEY || !DATABASE_ID) {
+    console.warn('⚠️ Notion API 키 또는 Database ID가 설정되지 않았습니다.');
+    return [];
+  }
+
+  // notion 클라이언트가 제대로 초기화되지 않은 경우
+  if (!notion || typeof notion.databases?.query !== 'function') {
+    console.error('❌ Notion 클라이언트가 제대로 초기화되지 않았습니다.');
+    return [];
+  }
+
   try {
     console.log('📝 Notion API: 게시글 목록 조회 시작');
     
@@ -101,7 +113,8 @@ export async function getPosts(): Promise<PostMetadata[]> {
     return posts;
   } catch (error) {
     console.error('❌ 게시글 목록 조회 실패:', error);
-    throw error;
+    // 에러 발생 시 빈 배열 반환 (페이지가 깨지지 않도록)
+    return [];
   }
 }
 
@@ -109,6 +122,12 @@ export async function getPosts(): Promise<PostMetadata[]> {
  * Slug로 특정 게시글의 메타데이터를 가져옵니다.
  */
 export async function getPostBySlug(slug: string): Promise<PostMetadata | null> {
+  // 환경 변수 검증
+  if (!process.env.NOTION_API_KEY || !DATABASE_ID) {
+    console.warn('⚠️ Notion API 키 또는 Database ID가 설정되지 않았습니다.');
+    return null;
+  }
+
   try {
     console.log(`📝 Notion API: 게시글 조회 (slug: ${slug})`);
     
@@ -123,7 +142,7 @@ export async function getPostBySlug(slug: string): Promise<PostMetadata | null> 
     return post;
   } catch (error) {
     console.error('❌ 게시글 조회 실패:', error);
-    throw error;
+    return null;
   }
 }
 
@@ -131,6 +150,18 @@ export async function getPostBySlug(slug: string): Promise<PostMetadata | null> 
  * 게시글의 모든 블록을 재귀적으로 가져옵니다.
  */
 export async function getPostBlocks(pageId: string): Promise<NotionBlock[]> {
+  // 환경 변수 검증
+  if (!process.env.NOTION_API_KEY) {
+    console.warn('⚠️ Notion API 키가 설정되지 않았습니다.');
+    return [];
+  }
+
+  // notion 클라이언트가 제대로 초기화되지 않은 경우
+  if (!notion || typeof notion.blocks?.children?.list !== 'function') {
+    console.error('❌ Notion 클라이언트가 제대로 초기화되지 않았습니다.');
+    return [];
+  }
+
   try {
     console.log(`📝 Notion API: 블록 조회 시작 (pageId: ${pageId})`);
     
@@ -166,7 +197,8 @@ export async function getPostBlocks(pageId: string): Promise<NotionBlock[]> {
     return blocks;
   } catch (error) {
     console.error('❌ 블록 조회 실패:', error);
-    throw error;
+    // 에러 발생 시 빈 배열 반환 (페이지가 깨지지 않도록)
+    return [];
   }
 }
 
