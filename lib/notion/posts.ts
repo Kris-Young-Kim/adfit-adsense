@@ -14,43 +14,49 @@ export async function getPosts(): Promise<PostMetadata[]> {
   }
 
   try {
-    const notion = getNotionClient();
+    const NOTION_API_KEY = process.env.NOTION_API_KEY;
     
-    // 디버깅: 클라이언트 구조 확인
-    console.log('🔍 Notion Client 구조 확인:');
-    console.log('   databases 타입:', typeof notion.databases);
-    console.log('   databases keys:', Object.keys(notion.databases || {}));
-    console.log('   query in databases:', 'query' in (notion.databases || {}));
+    if (!NOTION_API_KEY) {
+      throw new Error('NOTION_API_KEY가 설정되지 않았습니다.');
+    }
     
     console.log('📝 Notion API: 게시글 목록 조회 시작');
     
-    // 타입 단언을 사용하여 query 메서드 호출
-    const databases = notion.databases as any;
-    if (typeof databases.query !== 'function') {
-      console.error('❌ databases.query가 함수가 아닙니다.');
-      console.error('   사용 가능한 메서드:', Object.keys(databases));
-      throw new Error('databases.query 메서드를 찾을 수 없습니다.');
-    }
-    
-    const response = await databases.query({
-      database_id: DATABASE_ID,
-      filter: {
-        property: 'Published',
-        checkbox: {
-          equals: true,
-        },
+    // Notion API 직접 호출
+    const response = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${NOTION_API_KEY}`,
+        'Notion-Version': '2022-06-28',
+        'Content-Type': 'application/json',
       },
-      sorts: [
-        {
-          property: 'Date',
-          direction: 'descending',
+      body: JSON.stringify({
+        filter: {
+          property: 'Published',
+          checkbox: {
+            equals: true,
+          },
         },
-      ],
+        sorts: [
+          {
+            property: 'Date',
+            direction: 'descending',
+          },
+        ],
+      }),
     });
 
-    console.log(`✅ ${response.results.length}개의 게시글을 찾았습니다.`);
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('❌ Notion API 오류:', error);
+      throw new Error(`Notion API 오류: ${error.message || response.statusText}`);
+    }
 
-    const posts: PostMetadata[] = response.results
+    const data = await response.json();
+
+    console.log(`✅ ${data.results.length}개의 게시글을 찾았습니다.`);
+
+    const posts: PostMetadata[] = data.results
       .filter((page): page is typeof page & { properties: any } => 'properties' in page)
       .map((page) => {
         const properties = page.properties;
