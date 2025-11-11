@@ -48,7 +48,11 @@ export default function AdContainer({
           {/* Kakao AdFit 광고 */}
           {isAdfitEnabled() && adfitUnitId && (
             <div className="adfit-wrapper">
-              <AdFitAd unitId={adfitUnitId} responsive />
+              <AdFitAd 
+                unitId={adfitUnitId} 
+                width="300"
+                height="250"
+              />
             </div>
           )}
 
